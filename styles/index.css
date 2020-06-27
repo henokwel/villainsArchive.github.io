@@ -1,0 +1,37 @@
+:root {
+    --main-bg-color: #ececf3;
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    font-family: "Limelight", sans-serif;
+    text-rendering: optimizeLegibility;
+    background-color: var(--main-bg-color);
+}
+
+.well {
+    position: relative;
+    overflow: hidden;
+    transition: 1s cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+.top {
+    color: hsla(0, 21%, 11%, 0.25);
+    cursor: pointer;
+}
+
+.panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.profile_image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
