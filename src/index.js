@@ -33,13 +33,13 @@ data.map((prof, index) => {
     const div_name = document.createElement('div')
     const h1_name = document.createElement("h1")
     const p_name = document.createElement("p")
-    h1_name.className = `h1  el`
+    h1_name.className = `h1  profile_secName${index}`
 
     h1_name.textContent = prof.Profile.name
     p_name.textContent = "Name : "
-
     div_name.appendChild(p_name)
     div_name.appendChild(h1_name)
+
 
     // height
     const div_height = document.createElement('div')
@@ -47,10 +47,10 @@ data.map((prof, index) => {
     const p_height = document.createElement("p")
 
 
-    h1_height.textContent = prof.Profile.height
+    h1_height.textContent = prof.Profile.height + " cm"
     p_height.textContent = "Height : "
     h1_height.className = "h1"
-    h1_height.className = `h1  el}`
+    h1_height.className = `h1  profile_secHeight${index}`
 
 
     div_height.appendChild(p_height)
@@ -60,10 +60,10 @@ data.map((prof, index) => {
     const div_hair = document.createElement('div')
     const h1_hair = document.createElement("h1")
     const p_hair = document.createElement("p")
-    h1_hair.className = `h1  el`
+    h1_hair.className = `h1  profile_secHair${index}`
 
     h1_hair.textContent = prof.Profile.hair
-    p_hair.textContent = "Hair : "
+    p_hair.textContent = "Hair :"
 
     div_hair.appendChild(p_hair)
     div_hair.appendChild(h1_hair)
@@ -73,8 +73,8 @@ data.map((prof, index) => {
     const h1_weight = document.createElement("h1")
     const p_weight = document.createElement("p")
 
-    h1_weight.textContent = prof.Profile.weight
-    p_weight.textContent = "Weight : "
+    h1_weight.textContent = prof.Profile.weight + " kg"
+    p_weight.textContent = "Weight :"
 
     div_weight.appendChild(p_weight)
     div_weight.appendChild(h1_weight)
@@ -85,8 +85,10 @@ data.map((prof, index) => {
     const h1_bussinese = document.createElement("h1")
     const p_bussinese = document.createElement("p")
 
+    div_bussineseList.className = "Bussinese"
+
     div_bussineseList.innerHTML = prof.Bussinese.map(bussines => `<h1> ${bussines} </h1>`).join("")
-    p_bussinese.textContent = "Bussinese : "
+    p_bussinese.textContent = "Bussinese :"
     div_bussinese.appendChild(p_bussinese)
     div_bussinese.appendChild(div_bussineseList)
 
@@ -111,17 +113,11 @@ data.map((prof, index) => {
     const p_Case = document.createElement("p")
 
     const div_case_archive = document.createElement("div")
-    const h1_case_archive = document.createElement("h1")
-    const p_case_archive = document.createElement("p")
-
-    // div_bussineseList.innerHTML = prof.Bussinese.map(bussines => `<h1> ${bussines} </h1>`).join("")
-
-
 
     h1_case.textContent = `${prof.personalFile.name}(${prof.personalFile.vilian_name})`
     p_Case.textContent = prof.personalFile.info
 
-    div_case_archive.innerHTML = prof.Cases.map(file => `<h1> ${file.case_name} </h1> \n <p>${file.case_info}</p>`)
+    div_case_archive.innerHTML = prof.Cases.map(file => `<h1> ${file.case_name} </h1> \n <p>${file.case_info}</p>`).join("")
 
     ///////////////////////////////////////////////---- Profile Case End
 
@@ -141,55 +137,74 @@ data.map((prof, index) => {
     profile_case.appendChild(p_Case)
     profile_case.appendChild(div_case_archive)
 
-
-
-
-
     // profileArea.appendChild(profile_section)
     page.appendChild(profile_section)
     page.appendChild(profile_image)
     page.appendChild(profile_case)
     body.appendChild(page)
+})
+
+const profile_h1_animation = document.querySelectorAll("body .panel h1")
+const profile_case_all_p = document.querySelectorAll(".profile_case p")
+const observer_panels = document.querySelectorAll("body .panel")
+
+const option = {
+    root: null,
+    threshold: 0,
+    rootMargin: "-2px"
+}
+
+const observe_h1 = new IntersectionObserver((enties, observe) => {
+    enties.forEach(entry => {
+        if (!entry.isIntersecting) return
+        console.log("panel observed");
+
+        profile_h1_animation.forEach((_h1, index) => {
+            _h1.className = `h1_${index + 1}`
+            let textWrapper = document.querySelector(`.${_h1.className}`)
+            textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, `<span class=letter${index}>$&</span>`);
+            anime({
+                loop: 0,
+                targets: `.${textWrapper.className}  .letter${index} `,
+                opacity: [0, 1],
+                easing: "easeInOutQuad",
+                duration: 100,
+                delay: (el, i) => 50 * (i + 1)
+            })
+
+        })
+        observe.unobserve(entry.target)
+    })
+}, option)
+
+console.log(profile_case_all_p);
+
+const observe_case_p = new IntersectionObserver((entries, observe) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return
+
+        profile_case_all_p.forEach((_h1, index) => {
+            _h1.className = `p${index + 1}`
+            let textWrapper = document.querySelector(`.${_h1.className}`)
+            textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, `<span class=letterP${index}>$&</span>`);
+            anime({
+                loop: 0,
+                targets: `.${textWrapper.className}  .letterP${index} `,
+                opacity: [0, 1],
+                easing: "easeInOutQuad",
+                duration: 100,
+                delay: (el, i) => 10 * (i + 1)
+            })
+        })
+        observe.unobserve(entry.target)
+    })
+}, option)
+
+
+observer_panels.forEach(panel => {
+    observe_h1.observe(panel)
+    observe_case_p.observe(panel)
 
 })
-const sec = document.querySelectorAll('section')
-
-var els = document.querySelectorAll('.h1 .el');
-
-// var nodeList = anime({
-//     targets: els,
-//     translateX: 250
-// });
 
 
-
-var textWrapper = document.querySelector('.ml3');
-var textP = document.querySelector('.text')
-textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-textP.innerHTML = textP.textContent.replace(/\S/g, "<span class='letterP'>$&</span>");
-
-//m4
-var textWrapper4 = document.querySelector('.ml4');
-var textP4 = document.querySelector('.text4')
-textWrapper4.innerHTML = textWrapper4.textContent.replace(/\S/g, "<span class='letter4'>$&</span>");
-textP4.innerHTML = textP4.textContent.replace(/\S/g, "<span class='letterP4'>$&</span>");
-
-
-
-// anime({
-//     loop: 0,
-//     targets: '.ml3 .letter ,  .text .letterP',
-//     opacity: [0, 1],
-//     easing: "easeInOutQuad",
-//     duration: 100,
-//     delay: (el, i) => 50 * (i + 1)
-// })
-
-// anime({
-//     loop: 0,
-//     targets: ' .ml4 .letter4 , .text4 .letterP4',
-//     opacity: [0, 1],
-//     easing: "easeInOutQuad",
-//     duration: 100,
-//     delay: (el, i) => 50 * (i + 1)
-// })
