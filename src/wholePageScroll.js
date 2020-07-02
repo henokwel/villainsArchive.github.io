@@ -1,5 +1,5 @@
 /*[pan and well CSS scrolls]*/
-
+// Codepen source :- https://codepen.io/nearee/pen/zYYENMa
 
 var pnls = document.querySelectorAll('.panel').length,
     scdir, hold = false;
